@@ -67,7 +67,7 @@ public class Kmeans
         {
             for (int s = 0; s < M; s++)
             {
-                double[] p = { samples[s, 0], samples[s, 1] };
+                double[] p = Row(samples, s);
                 double best = double.MaxValue;
                 for (int j = 0; j < m; j++)
                 {
@@ -102,4 +102,6 @@ public class Kmeans
         
         return iterations;
     }
+    
+    static double[] Row(double[,] samples, int s)
 }

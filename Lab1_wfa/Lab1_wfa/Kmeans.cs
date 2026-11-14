@@ -22,59 +22,49 @@ public class GroupStats
 public class Kmeans
 {
     private static int seed = 123;
-    public static double Distance(double[] a, double[] b)
+    public static double Distance(double[,] a, int i, double[,] b, int j, bool onlyX1)
     {
-        return Math.Sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1]));
-    }
-
-    public static double CalculateX1(double[] a, double[] b)
-    {
-        return Math.Abs(a[0] - b[0]);
+        double dx = a[i, 0] - b[j, 0];
+        double dy = a[i, 1] - b[j, 1];
+        return onlyX1 ? Math.Abs(dx) : Math.Sqrt(dx * dx + dy * dy);
     }
 
     public static List<KMeansRound> KMeansRounds(
         double[,] samples, int m, int iters,
-        Func<double[], double[], double> distance,
-        int[] stateAt)
+        bool onlyX1, int[] stateAt)
     {
         int M = samples.GetLength(0);
-        int attrs = samples.GetLength(1);
         var rnd = new Random(seed);
         var iterations = new List<KMeansRound>();
-        
-        double[,] V = new double[m, attrs];
+
+        double[,] V = new double[m, 2];
         bool[] used = new bool[M];
 
         for (int j = 0; j < m; j++)
         {
             int s;
-            
+
             do
             {
                 s = rnd.Next(M);
-            }
-            while (used[s]);
-            
+            } while (used[s]);
+
             used[s] = true;
-            
-            for (int i = 0; i < attrs; i++)
-            {
-                V[j, i] = samples[s, i];
-            }
+
+            V[j, 0] = samples[s, 0];
+            V[j, 1] = samples[s, 1];
         }
 
         int[] u = new int[M];
-        
+
         for (int it = 1; it <= iters; it++)
         {
             for (int s = 0; s < M; s++)
             {
-                double[] p = Row(samples, s);
                 double best = double.MaxValue;
                 for (int j = 0; j < m; j++)
                 {
-                    double[] c = { V[j, 0], V[j, 1] };
-                    double d = Distance(p, c);
+                    double d = Distance(samples, s, V, j, onlyX1);
                     if (d < best)
                     {
                         best = d;
@@ -85,21 +75,22 @@ public class Kmeans
 
             for (int j = 0; j < m; j++)
             {
-                List<int> group = new List<int>();
-                for (int s = 0; s < M; s++)
-                    if (u[s] == j) group.Add(s);
+                double sum0 = 0;
+                double sum1 = 0;
+                int count = 0;
 
-                if (group.Count == 0) continue;
-
-                for (int i = 0; i < attrs; i++)
+                for (int i = 0; i < M; i++)
                 {
-                    double sum = 0;
-                    foreach (int s in group) sum += samples[s, i];
-                    V[j, i] = sum / group.Count;
+                    sum0 += samples[i, 0];
+                    sum1 += samples[i, 1];
+                    count++;
                 }
+
+                V[j, 0] = sum0 / count;
+                V[j, 1] = sum1 / count;
             }
 
-            if (Array.IndexOf(stateAt, it) >= 0)
+            if (stateAt.Contains(it))
             {
                 iterations.Add(new KMeansRound
                 {
@@ -109,19 +100,7 @@ public class Kmeans
                 });
             }
         }
-        
+
         return iterations;
-    }
-
-    static double[] Row(double[,] samples, int s)
-    {
-        var w = new double[samples.GetLength(1)];
-        
-        for (int i = 0; i < w.Length; i++)
-        {
-            w[i] = samples[s, i];
-        }
-
-        return w;
     }
 }

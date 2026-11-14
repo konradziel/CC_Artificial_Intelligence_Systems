@@ -62,6 +62,8 @@ public class Kmeans
                 V[j, i] = samples[s, i];
             }
         }
+
+        int[] u = new int[M];
         
         for (int it = 1; it <= iters; it++)
         {
@@ -97,11 +99,29 @@ public class Kmeans
                 }
             }
 
-            if (Array.IndexOf(reportAt, it) >= 0) Report(it);
+            if (Array.IndexOf(stateAt, it) >= 0)
+            {
+                iterations.Add(new KMeansRound
+                {
+                    Iteration = it,
+                    Center = (double[,])V.Clone(),
+                    Assignments = (int[])u.Clone()
+                });
+            }
         }
         
         return iterations;
     }
-    
+
     static double[] Row(double[,] samples, int s)
+    {
+        var w = new double[samples.GetLength(1)];
+        
+        for (int i = 0; i < w.Length; i++)
+        {
+            w[i] = samples[s, i];
+        }
+
+        return w;
+    }
 }

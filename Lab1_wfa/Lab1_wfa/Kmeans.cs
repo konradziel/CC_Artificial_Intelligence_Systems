@@ -69,11 +69,13 @@ public class Kmeans
 
                 for (int i = 0; i < M; i++)
                 {
+                    if (u[i] != j) continue;
                     sum0 += samples[i, 0];
                     sum1 += samples[i, 1];
                     count++;
                 }
 
+                if (count <= 0) continue;
                 V[j, 0] = sum0 / count;
                 V[j, 1] = sum1 / count;
             }
@@ -104,6 +106,7 @@ public class Kmeans
 
             for (int j = 0; j < samples.GetLength(0); j++)
             {
+                if (round.Assignments[j] == i) continue;
                 min1 = Math.Min(min1, samples[j, 0]);
                 max1 = Math.Max(max1, samples[j, 0]);
                 min2 = Math.Min(min2, samples[j, 1]);

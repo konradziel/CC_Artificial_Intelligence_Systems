@@ -27,13 +27,15 @@ public partial class Form1 : Form
         variantBox.Width = 280;
 
         runButton.Text = "Uruchom";
+        runButton.Width = 110;
+        runButton.Height = 35;
         runButton.Click += RunClicked;
 
         roundBox.DropDownStyle = ComboBoxStyle.DropDownList;
         roundBox.Width = 160;
         roundBox.SelectedIndexChanged += (s, e) => Draw();
 
-        var top = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 40, Padding = new Padding(5) };
+        var top = new FlowLayoutPanel { Dock = DockStyle.Top, Height = 50, Padding = new Padding(5) };
         top.Controls.Add(variantBox);
         top.Controls.Add(runButton);
         top.Controls.Add(roundBox);
@@ -113,6 +115,7 @@ public partial class Form1 : Form
         centers.LegendText = "Środki grup";
 
         plot.Plot.ShowLegend();
+        plot.Plot.Axes.AutoScale();
         plot.Refresh();
 
         reportBox.Text = Kmeans.Result(samples, round);

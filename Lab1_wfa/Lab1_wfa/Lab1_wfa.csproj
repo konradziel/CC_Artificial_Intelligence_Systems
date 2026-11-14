@@ -12,4 +12,8 @@
       <PackageReference Include="ScottPlot.WinForms" Version="5.1.59" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="..\spiralka.csv" Link="spiralka.csv" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
 </Project>

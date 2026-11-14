@@ -7,18 +7,6 @@ public class KMeansRound
     public int[] Assignments { get; set; } = Array.Empty<int>();
 }
 
-public class GroupStats
-{
-    public int Group { get; set; }
-    public double CenterX1 { get; set; }
-    public double CenterX2 { get; set; }
-    public int Count { get; set; }
-    public double MinX1 { get; set; }
-    public double MinX2 { get; set; }
-    public double MaxX1 { get; set; }
-    public double MaxX2 { get; set; }
-}
-
 public class Kmeans
 {
     private static int seed = 123;
@@ -102,5 +90,35 @@ public class Kmeans
         }
 
         return iterations;
+    }
+
+    public static string Result(double[,] samples, KMeansRound round)
+    {
+        string text = $"Po {round.Iteration} iteracjach\r\n";
+
+        for (int i = 0; i < round.Center.GetLength(0); i++)
+        {
+            int count = 0;
+            double min1 = double.MaxValue, max1 = double.MinValue;
+            double min2 = double.MaxValue, max2 = double.MaxValue;
+
+            for (int j = 0; j < samples.GetLength(0); j++)
+            {
+                min1 = Math.Min(min1, samples[j, 0]);
+                max1 = Math.Max(max1, samples[j, 0]);
+                min2 = Math.Min(min2, samples[j, 1]);
+                max2 = Math.Max(max2, samples[j, 1]);
+            }
+
+            text += $"Grupa {i + 1}: środek ({round.Center[i, 0]:F4}; {round.Center[i, 1]:F4}), próbek: {count}";
+
+            if (count > 0)
+            {
+                text += $", x1 [{min1:F4}; {max1:F4}], x2 [{min2:F4}; {max2:F4}]";
+            }
+
+            text += "\r\n";
+        }
+        return text;
     }
 }

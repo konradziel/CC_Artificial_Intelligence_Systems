@@ -1,6 +1,6 @@
 ﻿namespace Lab2_wfa;
 
-public record IterationResult(int Iteration, double x, double y, double Spread);
+public record IterationResult(int Iteration, double X, double Y, double Spread);
 
 
 public class OnePlusOne
@@ -17,7 +17,7 @@ public class OnePlusOne
         return Math.Sin(x / 10.0) * Math.Sin(x / 200);
     }
 
-    public static List<IterationResult> GetIterandrationResults(
+    public static List<IterationResult> GetIterationResults(
         double spread, double increaseSpeed, int amountIterations,
         double rangeMin, double rangeMax)
     {
@@ -29,11 +29,11 @@ public class OnePlusOne
 
         for (int i = 1; i <= amountIterations; i++)
         {
-            var xNext = x + RandomInRange(-rangeMin, rangeMax);
+            var xNext = x + RandomInRange(-spread, spread);
 
             while (xNext < -rangeMin || xNext > rangeMax)
             {
-                xNext += RandomInRange(-rangeMin/2, rangeMax/2);
+                xNext += RandomInRange(-spread/2, spread/2);
             }
             
             var yNext = Function(xNext);

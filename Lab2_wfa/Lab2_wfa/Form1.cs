@@ -81,7 +81,7 @@ public partial class Form1 : Form
         timer.Stop();
         var sc = scenarios[scenarioBox.SelectedIndex];
 
-        history = OnePlusOne.GetIterandrationResults(sc.Spread, IncreaseSpeed, Iterations, RangeMin, RangeMax);
+        history = OnePlusOne.GetIterationResults(sc.Spread, IncreaseSpeed, Iterations, RangeMin, RangeMax);
         grid.DataSource = history;
         foreach (var col in new[] { "X", "Y", "Spread" })
             grid.Columns[col]!.DefaultCellStyle.Format = "F5";

@@ -29,6 +29,8 @@ public class PSO
             }
         }
 
+        double[] xGlob = null;
+
         for (int i = 0; i < amountIterations; i++)
         {
             double[] scores = new double[N];
@@ -36,6 +38,11 @@ public class PSO
             for (int j = 0; j < N; j++)
             {
                 scores[j] = F(nIndividuals[j]);
+            }
+
+            if (i == 0)
+            {
+                xGlob = scores
             }
         }
         

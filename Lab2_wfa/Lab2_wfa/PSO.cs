@@ -15,14 +15,9 @@ public class PSO
         var result = new List<IterationResultPSO>();
         var amountOfAtributes = xMin.Length;
 
-        double[][] nIndividuals = new double[N][];
-        double[][] nXLok = new double[N][];
-
-        for (int i = 0; i < N; i++)
-        {
-            nIndividuals[i] = new double[amountOfAtributes];
-            nXLok[i] = new double[amountOfAtributes];
-        }
+        double[][] nIndividuals = CreateTable(N, amountOfAtributes);
+        double[][] nXLok = CreateTable(N, amountOfAtributes);
+        double[][] speed = CreateTable(N, amountOfAtributes);
 
         for (int j = 0; j < N; j++)
         {
@@ -33,19 +28,23 @@ public class PSO
                 nXLok[j][i] = r;
             }
         }
-
-        double[][] speed = new double[N][];
-
-        for (int i = 0; i < N; i++)
-        {
-            speed[i] = new double[amountOfAtributes];
-        }
-
+        
         return result;
     }
     
     static double RandomInRange(double min, double max)
     {
         return random.NextDouble() * (max - min) + min;
+    }
+
+    static double[][] CreateTable(int rows, int cols)
+    {
+        var table = new double[rows][];
+        for (int i = 0; i < rows; i++)
+        {
+            table[i] = new double[cols];
+        }
+
+        return table;
     }
 }

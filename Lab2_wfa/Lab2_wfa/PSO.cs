@@ -28,6 +28,16 @@ public class PSO
                 nXLok[j][i] = r;
             }
         }
+
+        for (int i = 0; i < amountIterations; i++)
+        {
+            double[] scores = new double[N];
+
+            for (int j = 0; j < N; j++)
+            {
+                scores[j] = F(nIndividuals[j]);
+            }
+        }
         
         return result;
     }
@@ -46,5 +56,14 @@ public class PSO
         }
 
         return table;
+    }
+
+    static double F(double[] individual)
+    {
+        double x1 = individual[0];
+        double x2 = individual[1];
+        
+        return Math.Sin(x1 * 0.05) + Math.Sin(x2 * 0.05) +
+            0.4 * Math.Sin(x1 * 0.15) * Math.Sin(x2 * 0.15);
     }
 }
